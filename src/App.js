@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+
 
 function App() {
+  const [appointments, setAppointments] = useState([]);
+  const [form, setForm] = useState({ patientName: '', doctorName: '', date: '' });
+
+
+  useEffect(() => {
+    fetch('/api/appointments')
+      .then(res => res.json())
+      .then(data => setAppointments(data));
+  }, []);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('/api/appointments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    }).then(res => res.json())
+      .then(newAppointment => setAppointments([...appointments, newAppointment]));
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Doctor's Office Appointments</h1>
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Patient Name" value={form.patientName} onChange={(e) => setForm({ ...form, patientName: e.target.value })} />
+        <input placeholder="Doctor Name" value={form.doctorName} onChange={(e) => setForm({ ...form, doctorName: e.target.value })} />
+        <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+        <button type="submit">Book Appointment</button>
+      </form>
+
+
+      <ul>
+        {appointments.map((appt) => (
+          <li key={appt._id}>{appt.patientName} with Dr. {appt.doctorName} on {new Date(appt.date).toLocaleDateString()}</li>
+        ))}
+      </ul>
     </div>
   );
 }
