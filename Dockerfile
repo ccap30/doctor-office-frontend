@@ -1,9 +1,9 @@
-FROM node:14
-WORKDIR /usr/src/app
+FROM node:latest 
+WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm instal
 COPY . .
 RUN npm run build
+RUN npm install -g serve
 EXPOSE 3001
-CMD ["npx", "serve", "build"]
-
+CMD ["serve", "-s", "build", "-l", "3001"]
