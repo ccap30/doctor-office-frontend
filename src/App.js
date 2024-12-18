@@ -7,7 +7,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/appointments')
+    fetch('http://a401f42d7f64640138dd4afb1b3acde2-1441576609.us-east-1.elb.amazonaws.com:3000/appointments')
       .then(res => res.json())
       .then(data => setAppointments(data));
   }, []);
@@ -15,7 +15,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/appointments', {
+    fetch('http://a401f42d7f64640138dd4afb1b3acde2-1441576609.us-east-1.elb.amazonaws.com:3000/appointments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
