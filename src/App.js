@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+const BACKEND_ENDPOINT = "http://a962405195c764b4ba01e8df35b7bf72-77735342.us-east-1.elb.amazonaws.com:3000/appointments";
 
 function App() {
   const [appointments, setAppointments] = useState([]);
@@ -7,7 +8,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://a401f42d7f64640138dd4afb1b3acde2-1441576609.us-east-1.elb.amazonaws.com:3000/appointments')
+    fetch(`${BACKEND_ENDPOINT}`)
       .then(res => res.json())
       .then(data => setAppointments(data));
   }, []);
@@ -15,7 +16,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://a401f42d7f64640138dd4afb1b3acde2-1441576609.us-east-1.elb.amazonaws.com:3000/appointments', {
+    fetch(`${BACKEND_ENDPOINT}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
